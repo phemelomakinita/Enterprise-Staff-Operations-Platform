@@ -1,4 +1,151 @@
-﻿@page
-@model EnterpriseStaffOperationsPlatform.Views.Staff.IndexModel
+﻿@model List<EnterpriseStaffOperationsPlatform.Models.StaffMember>
+
 @{
+    ViewData["Title"] = "Staff Management";
 }
+
+<h1>Staff Management</h1>
+
+
+<!-- CREATE STAFF MEMBER -->
+
+<h2>Add New Staff Member</h2>
+
+<form asp-controller="Staff" asp-action="Create" method="post">
+
+    <div>
+        <label for="StaffId">Staff ID:</label>
+        <input type="number" id="StaffId" name="StaffId" required />
+    </div>
+
+    <div>
+        <label for="FullName">Full Name:</label>
+        <input type="text" id="FullName" name="FullName" required />
+    </div>
+
+    <div>
+        <label for="Email">Email:</label>
+        <input type="email" id="Email" name="Email" required />
+    </div>
+
+    <div>
+        <label for="Position">Position:</label>
+        <input type="text" id="Position" name="Position" required />
+    </div>
+
+    <div>
+        <label for="Unit">Unit:</label>
+        <input type="text" id="Unit" name="Unit" required />
+    </div>
+
+    <button type="submit">Add Staff Member</button>
+
+</form>
+
+<div asp-validation-summary="All"></div>
+
+
+<hr>
+
+
+<!-- LIST STAFF MEMBERS -->
+
+<h2>Staff Members</h2>
+
+@if (Model.Count == 0)
+{
+    <p>No staff members have been added yet.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Staff ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Position</th>
+                <th>Unit</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var staff in Model)
+            {
+                <tr>
+                    <td>@staff.StaffId</td>
+                    <td>@staff.FullName</td>
+                    <td>@staff.Email</td>
+                    <td>@staff.Position</td>
+                    <td>@staff.Unit</td>
+
+                    <td>
+
+                        <!-- EDIT STAFF MEMBER -->
+
+                        <form asp-controller="Staff"
+                              asp-action="Edit"
+                              method="post">
+
+                            <input type="hidden"
+                                   name="StaffId"
+                                   value="@staff.StaffId" />
+
+                            <input type="text"
+                                   name="FullName"
+                                   value="@staff.FullName"
+                                   required />
+
+                            <input type="email"
+                                   name="Email"
+                                   value="@staff.Email"
+                                   required />
+
+                            <input type="text"
+                                   name="Position"
+                                   value="@staff.Position"
+                                   required />
+
+                            <input type="text"
+                                   name="Unit"
+                                   value="@staff.Unit"
+                                   required />
+
+                            <button type="submit">Save Changes</button>
+
+                        </form>
+
+
+                        <!-- DELETE STAFF MEMBER -->
+
+                        <form asp-controller="Staff"
+                              asp-action="Delete"
+                              method="post">
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@staff.StaffId" />
+
+                            <button type="submit">Delete</button>
+
+                        </form>
+
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+<hr>
+
+
+<!-- LOGOUT -->
+
+<a asp-controller="Access" asp-action="Logout">
+    Logout
+</a>
